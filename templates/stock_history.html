@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock History</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <a href="/dashboard" class="back-btn">← Dashboard</a>
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🚀 <span>StockPilot</span>
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/logout">Logout</a>
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <h1>Stock History</h1>
+
+        <p>View all stock movement history.</p>
+
+        <form action="/stock_history" method="POST" class="search-form">
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search Product Code or Product Name"
+                value="{{ search }}">
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+        <table class="product-table">
+
+            <tr>
+
+                <th>ID</th>
+                <th>Product Code</th>
+                <th>Product Name</th>
+                <th>Action</th>
+                <th>Quantity</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Done By</th>
+                <th>Role</th>
+            </tr>
+
+            {% for row in history %}
+
+            <tr>
+
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+
+                {% if row[3] == "IN" %}
+
+                    <td style="color:green;font-weight:bold;">
+                        {{ row[3] }}
+                    </td>
+
+                {% else %}
+
+                    <td style="color:red;font-weight:bold;">
+                        {{ row[3] }}
+                    </td>
+
+                {% endif %}
+
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td>{{ row[7] }}</td>
+                <td>{{ row[8] }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+</body>
+</html>

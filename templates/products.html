@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPilot Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <a href="/dashboard" class="back-btn">← Dashboard</a>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+
+        <div class="logo">
+            🚀 StockPilot
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/login">Logout</a>
+        </div>
+
+    </div>
+
+    <!-- Welcome Section -->
+
+    <div class="welcome">
+
+        <h2>Products</h2>
+
+        <p>Manage all your products from one place</p>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+
+    <div class="container">
+
+        <div class="cards">
+            <a href="/view_products" class="card">
+
+              📋
+
+               <h3>View Products</h3>
+
+            </a>
+
+            
+            <a href="/search_product" class="card">
+
+               🔍
+
+               <h3>Search Product</h3>
+
+            </a>
+
+            {% if session["role"] == "Admin" %}
+            <a href="/add_product" class="card">
+
+               +
+
+               <h3>Add Product</h3>
+
+            </a>
+            {% endif %}
+            
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

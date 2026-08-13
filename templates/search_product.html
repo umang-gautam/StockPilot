@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Product</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <a href="/dashboard" class="back-btn">← Dashboard</a>
+    <div class="navbar">
+
+        <div class="logo">
+            🚀 StockPilot
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/">Logout</a>
+        </div>
+
+    </div>
+
+    <div class="container">
+
+        <h1>Search Product</h1>
+
+        <p>Search any product using Product Code or Product Name.</p>
+
+        <div class="search-card">
+
+            <form method="POST">
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Enter Product Code or Product Name"
+                    class="search-input">
+
+                <br><br>
+
+                <button type="submit" class="search-btn">
+                    Search
+                </button>
+
+            </form>
+        </div>
+
+        {% if products %}
+
+        <br><br>
+
+        <table>
+
+            <tr>
+            <th>Product Code</th>
+            <th>Product Name</th>
+            <th>MRP</th>
+            <th>Current Stock</th>
+            <th>Status</th>
+            </tr>
+
+            {% for product in products %}
+
+            <tr>
+            <td>{{ product[1] }}</td>
+            <td>{{ product[2] }}</td>
+            <td>₹ {{ product[3] }}</td>
+            <td>{{ product[4] }}</td>
+
+            <td>
+
+            {% if product[4] == 0 %}
+
+            <span class="status-out">Out of Stock</span>
+
+            {% elif product[4] <= product[5] %}
+
+            <span class="status-low">Low Stock</span>
+
+            {% else %}
+
+            <span class="status-in">In Stock</span>
+
+            {% endif %}
+
+            </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+        {% endif %}
+        {% if request.method == "POST" and not products %}
+
+        <p class="error-message">
+            ❌ No Products Found
+        </p>
+
+        
+        {% endif %}
+        
+
+    </div>
+
+</body>
+
+</html>

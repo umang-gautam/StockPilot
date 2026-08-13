@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+
+        <div class="logo">
+            🚀 StockPilot
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/login">Logout</a>
+        </div>
+
+    </div>
+
+    <a href="/dashboard" class="back-btn">← Dashboard</a>
+    <h1>Add New Product</h1>
+
+    <form action="/add_product" method="POST" class="product-form">
+
+        <label>Product Code</label><br>
+        <input type="text" name="product_code"><br><br>
+
+        <label>Product Name</label><br>
+        <input type="text" name="product_name"><br><br>
+
+        <label>MRP</label><br>
+        <input type="number" step="0.01" name="mrp"><br><br>
+
+        <label>Current Stock</label><br>
+        <input type="number" name="current_stock"><br><br>
+
+        <label>Minimum Stock</label><br>
+        <input type="number" name="minimum_stock"><br><br>
+
+        <label>Brand ID</label><br>
+        <input type="number" name="brand_id"><br><br>
+
+        <button type="submit">Save Product</button>
+
+    </form>
+
+</body>
+
+</html>

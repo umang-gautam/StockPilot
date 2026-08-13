@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Employee Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="navbar">
+
+        <div class="logo">
+            🚀 StockPilot
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/login">Logout</a>
+        </div>
+
+</div>
+
+<div class="page">
+
+    <a href="/settings" class="back-btn">← Settings</a>
+
+    <h1>Employee Management</h1>
+
+    <p>Add and manage employee accounts.</p>
+    {% if error %}
+    <div class="error-message">
+        {{ error }}
+    </div>
+    {% endif %}
+    <form action="/add_employee" method="POST" class="employee-form">
+
+        <input
+            type="text"
+            name="owner_name"
+            placeholder="Employee Name"
+            required
+        >
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            required
+        >
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+        >
+
+        <select name="role">
+
+            <option value="Employee">
+                Employee
+            </option>
+
+        </select>
+
+        <button type="submit">
+            Add Employee
+        </button>
+
+    </form>
+    <h2>Employees</h2>
+    <table>
+
+        <tr>
+
+        <th>Name</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Action</th>
+        </tr>
+
+        {% for employee in employees %}
+
+        <tr>
+
+        <td>{{ employee[0] }}</td>
+        <td>{{ employee[1] }}</td>
+        <td>{{ employee[2] }}</td>
+        <td>
+            {% if employee[2] != "Admin" %}
+                <a href="/delete_employee/{{ employee[1] }}"
+                class="delete-btn"
+                onclick="return confirm('Delete this employee?')">
+                    Delete
+                </a>
+            {% endif %}
+        </td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+    {% if success %}
+    <div class="success-message">
+        {{ success }}
+    </div>
+    {% endif %}
+    
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        🚀 StockPilot
+    </div>
+
+    <div class="nav-right">
+
+        <span> 👤{{  session["owner_name"] }}</span>
+
+        <a href="/logout">Logout</a>
+
+    </div>
+
+</div>
+
+
+<div class="page">
+
+    <a href="/dashboard" class="back-btn">
+        ← Dashboard
+    </a>
+
+    <h1>Settings</h1>
+
+    <p>Select a settings module.</p>
+
+
+    <div class="settings-container">
+        {% if session["role"] == "Admin" %}
+        <a href="/inventory_settings" class="setting-card">
+
+            <h2>📦 Inventory Settings</h2>
+
+            <p>
+                Manage Minimum Stock Levels
+            </p>
+
+        </a>
+        {% endif %}
+
+        <a href="/change_password" class="setting-card">
+
+            <h2>🔐 Change Password</h2>
+
+            <p>Update your account password</p>
+
+        </a>
+        {% if session["role"] == "Admin" %}
+
+        <a href="/employee_management" class="setting-card">
+
+            <h2>👥 Employee Management</h2>
+
+            <p>Manage employee accounts</p>
+
+        </a> 
+        {% endif %}
+        <div class="setting-card disabled">
+
+            <h2>🏪 Shop Information</h2>
+
+            <p>Coming Soon</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

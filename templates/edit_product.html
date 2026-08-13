@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Edit Product</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="/view_products" class="back-btn">
+        ← View Products
+    </a>
+
+    <h1>Edit Product</h1>
+
+    <p class="page-description">
+        Update product information.
+    </p>
+
+    <div class="form-card">
+
+        <form method="POST">
+
+            <label>Product Code</label>
+
+            <input
+                type="text"
+                value="{{ product[0] }}"
+                readonly
+            >
+
+            <label>Product Name</label>
+
+            <input
+                type="text"
+                name="product_name"
+                value="{{ product[1] }}"
+                required
+            >
+
+            <label>MRP</label>
+
+            <input
+                type="number"
+                step="0.01"
+                name="mrp"
+                value="{{ product[2] }}"
+                required
+            >
+
+            <label>Current Stock</label>
+
+            <input
+                type="number"
+                name="current_stock"
+                value="{{ product[3] }}"
+                required
+            >
+
+            <label>Minimum Stock</label>
+
+            <input
+                type="number"
+                name="minimum_stock"
+                value="{{ product[4] }}"
+                required
+            >
+
+            <button class="primary-btn">
+                Save Changes
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

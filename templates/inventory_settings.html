@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Inventory Settings</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <div class="navbar">
+
+        <div class="logo">
+            🚀 StockPilot
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/logout">Logout</a>
+        </div>
+
+    </div>
+
+    <div class="page">
+
+        <a href="/settings" class="back-btn">
+            ← Settings
+        </a>
+
+        <h1>Inventory Settings</h1>
+
+        <p>Manage minimum stock levels for each product.</p>
+
+        <form action="/search_inventory_settings" method="POST">
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search Product Code or Name"
+                    required>
+
+                <button type="submit">
+                    Search
+                </button>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="success-message">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+        </form>
+        {% if products is defined %}
+        <table id="productTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Product Code</th>
+
+                    <th>Product Name</th>
+
+                    <th>Current Stock</th>
+
+                    <th>Minimum Stock</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for product in products %}
+
+                <form action="/update_min_stock" method="POST">
+
+                <tr>
+
+                    <td>
+
+                        {{ product[0] }}
+
+                        <input
+                            type="hidden"
+                            name="product_code"
+                            value="{{ product[0] }}">
+
+                    </td>
+
+                    <td>{{ product[1] }}</td>
+
+                    <td>{{ product[2] }}</td>
+
+                    <td>
+
+                        <input
+                            type="number"
+                            name="minimum_stock"
+                            value="{{ product[3] }}"
+                            style="width:80px;">
+
+                    </td>
+
+                    <td>
+
+                        <button type="submit">
+                            Save
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                </form>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+        {% endif %}
+    </div>
+
+<script>
+
+function searchProduct(){
+
+    let input = document.getElementById("searchInput").value.toUpperCase();
+
+    let table = document.getElementById("productTable");
+
+    let tr = table.getElementsByTagName("tr");
+
+    for(let i=1;i<tr.length;i++){
+
+        let code = tr[i].getElementsByTagName("td")[0];
+
+        let name = tr[i].getElementsByTagName("td")[1];
+
+        let txt1 = code.textContent || code.innerText;
+
+        let txt2 = name.textContent || name.innerText;
+
+        if(txt1.toUpperCase().indexOf(input)>-1 ||
+
+           txt2.toUpperCase().indexOf(input)>-1){
+
+            tr[i].style.display="";
+
+        }
+
+        else{
+
+            tr[i].style.display="none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

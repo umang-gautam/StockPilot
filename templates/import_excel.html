@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPilot Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <a href="/dashboard" class="back-btn">← Dashboard</a>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+
+        <div class="logo">
+            🚀 StockPilot
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/login">Logout</a>
+        </div>
+
+    </div>
+
+    <!-- Welcome Section -->
+
+    <div class="welcome">
+
+        <h2>Import Excel</h2>
+
+        <p>Import all products from Excel into StockPilot</p>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+
+    <div class="container">
+
+        <div class="cards">
+            
+            
+            <form action="/import_excel" method="POST" enctype="multipart/form-data">
+
+              <input type="file" name="excel_file">
+
+              <br><br>
+
+               <button type="submit">
+                   Upload Excel
+                </button>
+
+            </form>
+
+            
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

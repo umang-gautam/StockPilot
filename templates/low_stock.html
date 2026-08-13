@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Low Stock</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        🚀 StockPilot
+    </div>
+
+    <div class="nav-right">
+        <span> 👤{{  session["owner_name"] }}</span>
+        <a href="/login">Logout</a>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <a href="/dashboard" class="back-btn">
+        ← Dashboard
+    </a>
+
+    <h1>Low Stock Products</h1>
+
+    <table>
+
+        <tr>
+
+            <th>Product Code</th>
+            <th>Product Name</th>
+            <th>MRP</th>
+            <th>Current Stock</th>
+            <th>Minimum Stock</th>
+            <th>Short By</th>
+        </tr>
+
+        {% for product in products %}
+
+        
+
+            <tr>
+
+                <td>{{ product[0] }}</td>
+
+                <td>{{ product[1] }}</td>
+
+                <td>₹ {{ product[2] }}</td>
+
+                <td>{{ product[3] }}</td>
+
+                <td>{{ product[4] }}</td>
+
+                <td class="short-stock">
+                    {{ product[5] }}
+                </td>
+
+            </tr>
+       
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+
+</html>

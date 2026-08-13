@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPilot Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+
+        <div class="logo">
+            🚀 StockPilot
+        </div>
+
+        <div class="nav-right">
+            <span> 👤{{  session["owner_name"] }}</span>
+            <a href="/login">Logout</a>
+        </div>
+
+    </div>
+
+    <!-- Welcome Section -->
+
+    <div class="welcome">
+
+        <h2> Hi, {{ owner_name }} 👋</h2>
+        <p>Roshan Lal Sanitary</p>
+
+    </div>
+
+    <!-- Dashboard Cards -->
+
+    <div class="stats-container">
+
+    <div class="stat-card">
+        <div class="stat-icon">📦</div>
+
+        <div class="stat-info">
+            <h4>Total Products</h4>
+            <h2>{{ total_products }}</h2>
+        </div>
+    </div>
+
+    <a href="/low_stock" class="stat-card">
+
+    <div class="stat-icon warning">
+        ⚠️
+    </div>
+
+    <div class="stat-info">
+        <h4>Low Stock Items</h4>
+        <h2>{{ low_stock }}</h2>
+    </div>
+
+    </a>
+    <div class="stat-card">
+        <div class="stat-icon">📥</div>
+
+        <div class="stat-info">
+            <h4>Today's Stock In</h4>
+            <h2>{{ today_stock_in }}</h2>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">📤</div>
+
+        <div class="stat-info">
+            <h4>Today's Stock Out</h4>
+            <h2>{{ today_stock_out }}</h2>
+        </div>
+    </div>
+</div>
+
+        <div class="cards">
+
+            <a href="/products" class="card">
+                <span>📦</span>
+                <h3>Products</h3>
+            </a>
+            {% if session["role"] == "Admin" %}
+            <a href="/import_excel" class="card">
+                <span>📂</span>
+                <h3>Import Excel</h3>
+            </a>
+            {% endif %}
+            <a href="/inventory" class="card">
+                <span>📊</span>
+                <h3>Inventory</h3>
+            </a>
+            
+            <a href="/settings" class="card">
+                <span>⚙️</span>
+                <h3>Settings</h3>
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
