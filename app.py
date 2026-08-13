@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, flash, session
 import pandas as pd
 import mysql.connector
 import os
+from datetime import timedelta
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -127,6 +128,11 @@ def dashboard():
     today_stock_out=today_stock_out,
     owner_name=session["owner_name"]
 )
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 
 @app.route("/low_stock")
 def low_stock():
@@ -792,6 +798,11 @@ def stock_history():
         cursor.execute(query)
 
     history = cursor.fetchall()
+
+    history = [
+    row[:6] + ((row[6] + timedelta(hours=5, minutes=30)) % timedelta(days=1),) + row[7:]
+    for row in history
+    ]
 
     return render_template(
         "stock_history.html",
