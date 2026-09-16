@@ -1,9 +1,15 @@
-from flask import Flask, render_template, request, redirect, flash, session
+from flask import Flask, render_template, request, redirect, flash, session, send_file
 import pandas as pd
 import mysql.connector
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+
+from io import BytesIO
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet
 
 load_dotenv()
 app = Flask(__name__)
@@ -296,6 +302,90 @@ def view_products():
         search=search
     )
 
+@app.route("/download_current_stock_pdf")
+def download_current_stock_pdf():
+
+    cursor = db.cursor()
+
+    cursor.execute("""
+        SELECT product_code, product_name, mrp, current_stock
+        FROM products
+        WHERE current_stock > 0
+        ORDER BY product_name
+    """)
+
+    products = cursor.fetchall()
+
+    cursor.close()
+
+    # Create PDF in memory
+    buffer = BytesIO()
+
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=A4,
+        rightMargin=30,
+        leftMargin=30,
+        topMargin=30,
+        bottomMargin=30
+    )
+
+    styles = getSampleStyleSheet()
+
+    elements = []
+
+    # Title
+    title = Paragraph(
+        "<b>StockPilot - Current Stock</b>",
+        styles["Title"]
+    )
+
+    elements.append(title)
+    elements.append(Spacer(1, 10))
+
+    # Table data
+    data = [
+        ["Product Code", "Product Name", "MRP", "Current Stock"]
+    ]
+
+    for product in products:
+        data.append([
+            product[0],
+            product[1],
+            str(product[2]),
+            str(product[3])
+        ])
+
+    table = Table(
+        data,
+        colWidths=[100, 250, 70, 80],
+        repeatRows=1
+    )
+
+    table.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("GRID", (0, 0), (-1, -1), 0.5, colors.black),
+        ("ALIGN", (2, 1), (-1, -1), "CENTER"),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("FONTSIZE", (0, 0), (-1, -1), 8),
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+        ("TOPPADDING", (0, 0), (-1, 0), 8),
+    ]))
+
+    elements.append(table)
+
+    doc.build(elements)
+
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name="StockPilot_Current_Stock.pdf",
+        mimetype="application/pdf"
+    )
 
 @app.route("/edit_product/<product_code>", methods=["GET", "POST"])
 def edit_product(product_code):
